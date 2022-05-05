@@ -100,12 +100,20 @@ countOccurences (x:y) c nb | x == c = countOccurences y c (nb + 1)
 
 parseLine :: Pixel -> String -> Pixel
 parseLine pxl [] = pxl
-parseLine pxl@(Pixel (x, y) (r, g, b)) (l:ls) | l == '(' && (countOccurences ls '(' 0) == 1 = parseLine (Pixel (myGetNbr ls 0, y) (r, g, b)) ls
-                                              | l == ',' && (countOccurences ls '(' 0) == 1 = parseLine (Pixel (x, myGetNbr ls 0) (r, g, b)) ls
-                                              | l == '(' && (countOccurences ls '(' 0) == 0 = parseLine (Pixel (x, y) (myGetNbr ls 0, g, b)) ls
-                                              | l == ',' && (countOccurences ls '(' 0) == 0 && (countOccurences ls ',' 0) == 1 = parseLine (Pixel (x, y) (r, myGetNbr ls 0, b)) ls
-                                              | l == ',' && (countOccurences ls '(' 0) == 0 && (countOccurences ls ',' 0) == 0 = parseLine (Pixel (x, y) (r, g, myGetNbr ls 0)) ls
-                                              | otherwise = parseLine pxl ls
+parseLine pxl@(Pixel p@(x, y) c@(r, g, b)) (l:ls) | l == '(' &&
+    (countOccurences ls '(' 0) == 1 = parseLine (Pixel (myGetNbr ls 0, y) c) ls
+                                                  | l == ',' &&
+    (countOccurences ls '(' 0) == 1 = parseLine (Pixel (x, myGetNbr ls 0) c) ls
+                                                  | l == '(' &&
+    (countOccurences ls '(' 0) == 0 =
+        parseLine (Pixel p (myGetNbr ls 0, g, b)) ls
+                                                  | l == ',' &&
+    (countOccurences ls '(' 0) == 0 && (countOccurences ls ',' 0) == 1 =
+        parseLine (Pixel p (r, myGetNbr ls 0, b)) ls
+                                                  | l == ',' &&
+    (countOccurences ls '(' 0) == 0 && (countOccurences ls ',' 0) == 0 =
+        parseLine (Pixel p (r, g, myGetNbr ls 0)) ls
+                                                  | otherwise = parseLine pxl ls
 
 fct :: [Pixel] -> [String] -> [Pixel]
 fct pixels [] = pixels
