@@ -48,3 +48,7 @@ manageArgs args = go initConf args
         go config ("-f":valueFilepath:params) =
                             go config{filepath = Just valueFilepath} params
         go _ _ = Nothing
+
+distance :: (Float, Float, Float) -> (Float, Float, Float) -> Float
+distance (x, xs, xt) (y, ys, yt) =
+    sqrt ((x - y)**2 + (xs - ys)**2 + (xt - yt)**2)
