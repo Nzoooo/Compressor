@@ -22,5 +22,5 @@ main = do
     case maConfig of
         Nothing -> usage >>
             exitWith (ExitFailure 84)
-        -- Just newConfig -> fct newConfig
+        Just newConfig -> manageCompressor newConfig
     return()
