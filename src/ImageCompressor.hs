@@ -56,11 +56,10 @@ toConfig (Params _ Nothing _) = Nothing
 toConfig (Params _ _ Nothing) = Nothing
 toConfig (Params (Just colors) (Just converge) (Just filepath))
         | colors <= 0 || converge <= 0 = Nothing
-        | otherwise = do
-                return $ Config { configColors = colors
-                                , configConverge = converge
-                                , configFilepath = filepath
-                                }
+        | otherwise = return $ Config { configColors = colors
+                                        , configConverge = converge
+                                        , configFilepath = filepath
+                                        }
 
 manageArgs :: [String] -> Maybe Params
 manageArgs args = go initConf args
